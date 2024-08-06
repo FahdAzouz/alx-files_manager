@@ -2,6 +2,7 @@ import { builtinModules } from 'module';
 import { createClient } from 'redis';
 import { promisify } from 'util';
 
+// class to define methods for commonly used redis commands
 class RedisClient {
   constructor() {
     this.client = createClient();
@@ -9,6 +10,7 @@ class RedisClient {
       console.log(`Redis client not connected to server: $(error)`);
     });
   }
+
   // Check if Redis is alive
   isAlive() {
     if (this.client.connected) {
@@ -39,4 +41,5 @@ class RedisClient {
 }
 
 const redisClient = new RedisClient();
+
 module.exports = redisClient;
