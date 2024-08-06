@@ -1,4 +1,3 @@
-import { builtinModules } from 'module';
 import { createClient } from 'redis';
 import { promisify } from 'util';
 
@@ -7,11 +6,11 @@ class RedisClient {
   constructor() {
     this.client = createClient();
     this.client.on('error', (error) => {
-      console.log(`Redis client not connected to server: $(error)`);
+      console.log(`Redis client not connected to server: ${error}`);
     });
   }
 
-  // Check if Redis is alive
+  // check connection status and report
   isAlive() {
     if (this.client.connected) {
       return true;
@@ -19,24 +18,24 @@ class RedisClient {
     return false;
   }
 
-
-  // get a value from Redis
+  // get value for given key from redis server
   async get(key) {
     const redisGet = promisify(this.client.get).bind(this.client);
     const value = await redisGet(key);
     return value;
   }
 
-  // set a value in Redis
-  async set(key, value, duration) {
+  // set key value pair to redis server
+  async set(key, value, time) {
     const redisSet = promisify(this.client.set).bind(this.client);
     await redisSet(key, value);
-    this.client.expire(key, duration);
+    await this.client.expire(key, time);
   }
 
-  // delete a value from Redis
+  // del key vale pair from redis server
   async del(key) {
-    this.client.del(key);
+    const redisDel = promisify(this.client.del).bind(this.client);
+    await redisDel(key);
   }
 }
 
