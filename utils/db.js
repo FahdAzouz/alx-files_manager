@@ -3,6 +3,7 @@ import { env } from 'process';
 const DB_HOST = env.DB_HOST || 'localhost';
 const DB_PORT = env.DB_PORT || 27017;
 const DB_DATABASE = env.DB_DATABASE || 'files_manager';
+
 class DBClient {
     constructor() {
         this.client = new MongoClient(`mongodb://${DB_HOST}:${DB_PORT}`, { UseNewUrlParser: true, UseUnifiedTopology: true });
@@ -31,4 +32,5 @@ class DBClient {
 }
 
 const dbClient = new DBClient();
+
 module.exports = dbClient;
